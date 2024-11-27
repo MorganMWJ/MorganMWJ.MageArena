@@ -4,7 +4,6 @@ A 2D top-down magic battle arena video game built in Unity.
 
 # Game Ideas
 Mage Game
-========
 Health, Armor, Magic bars
 2D top-down arena spellcaster battle game
 cartoon like
@@ -26,21 +25,21 @@ Challenges with rewards???
 
 
 SPELLS:
-teleport
-sheild
-fireball
-conjure vortex
-summon golem
-invisble
-Paralyse enemy
-Tie up enemy in plant vines
-Silence (mute mages)
-Mastering a spell changes it's effect and makes it cheaper (or free) to cast
+- teleport
+- sheild
+- fireball
+- conjure vortex
+- summon golem
+- invisble
+- Paralyse enemy
+- Tie up enemy in plant vines
+- Silence (mute mages)
+-Mastering a spell changes it's effect and makes it cheaper (or free) to cast
 
 Enemies:
- zombie/mobs, soldiers (different armor levels)
- large enemies - troll, demon
- spell caster enemies - wizard (neophyte, acolyte, arch mage)
+ - zombie/mobs, soldiers (different armor levels)
+ - large enemies - troll, demon
+ - spell caster enemies - wizard (neophyte, acolyte, arch mage)
 
 Melee enemies should attack quickly (no warning sheild blocks only if it would actually block attack) and be weak compared to player - but there are many of them
 Player should be able to cast a lot of spells quickly - dependant on magic bar
