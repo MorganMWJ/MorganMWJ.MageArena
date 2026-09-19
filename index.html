@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Mage Arena</title>
+  <meta name="description" content="A colourful gothic top-down spellcasting arena game." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%236f4ad8' d='M13 50h38L39 30 46 8 22 22 13 50Z'/%3E%3Cpath fill='%23e3c15b' d='m32 20 2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5Z'/%3E%3Cpath fill='%23201732' d='M8 50h48v7H8z'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="app">
+    <section id="title-screen" class="screen active" aria-labelledby="game-title">
+      <div class="moon"></div>
+      <div class="title-card">
+        <p class="eyebrow">MorganMWJ presents</p>
+        <h1 id="game-title">Mage <span>Arena</span></h1>
+        <p class="intro">Choose an arena. Grow your magic. Become the archmage.</p>
+        <div class="arena-select" aria-label="Choose arena">
+          <button class="arena-card selected" data-arena="colosseum"><span>☀</span><b>Sunstone Colosseum</b><small>Recommended · Rank I</small></button>
+          <button class="arena-card" data-arena="graveyard"><span>☾</span><b>Moonfall Graveyard</b><small>Rank I</small></button>
+        </div>
+        <button id="play-button" class="primary">Enter the Colosseum</button>
+        <button id="talents-button" class="secondary">Talents <span id="points-badge">0 points</span></button>
+        <p class="controls-hint">WASD to move · Mouse to aim · Hold click to charge</p>
+      </div>
+      <div class="wizard-portrait" aria-hidden="true"><div class="hat"></div><div class="face">•‿•</div><div class="robe"></div><div class="staff">✦</div></div>
+    </section>
+
+    <section id="game-screen" class="screen" aria-label="Mage Arena game">
+      <canvas id="game" width="1280" height="720"></canvas>
+      <div id="hud">
+        <div class="identity"><span class="crest">✦</span><div><strong>Morgan the Mage</strong><small id="level-label">Level 1</small></div></div>
+        <div class="bars">
+          <div class="bar health"><i id="health-fill"></i><span id="health-label">100 / 100</span></div>
+          <div class="bar armor"><i id="armor-fill"></i><span id="armor-label">0 Armour</span></div>
+          <div class="bar magic"><i id="mana-fill"></i><span id="mana-label">100 / 100</span></div>
+          <div class="bar xp"><i id="xp-fill"></i><span id="xp-label">0 / 100 XP</span></div>
+        </div>
+        <div class="wave"><small id="arena-label">COLOSSEUM</small><strong id="wave-label">Wave 1</strong></div>
+      </div>
+      <div id="spellbar" aria-label="Spell bar">
+        <div class="spell" data-spell="golem"><kbd>1</kbd><b>♟</b><span>Golem</span><em id="cooldown-golem"></em></div>
+        <div class="spell" data-spell="vortex"><kbd>2</kbd><b>◉</b><span>Vortex</span><em id="cooldown-vortex"></em></div>
+        <div class="spell" data-spell="vines"><kbd>3</kbd><b>♧</b><span>Vines</span><em id="cooldown-vines"></em></div>
+        <div class="spell" data-spell="teleport"><kbd>4</kbd><b>➜</b><span>Teleport</span><em id="cooldown-teleport"></em></div>
+        <div class="spell locked future-slot" data-unlock="4"><kbd>5</kbd><b>?</b><span>Level 4</span></div>
+        <div class="spell locked future-slot" data-unlock="7"><kbd>6</kbd><b>?</b><span>Level 7</span></div>
+        <div class="spell locked future-slot" data-unlock="11"><kbd>7</kbd><b>?</b><span>Level 11</span></div>
+        <div class="spell locked future-slot" data-unlock="16"><kbd>8</kbd><b>?</b><span>Level 16</span></div>
+      </div>
+      <div id="default-abilities"><div class="default-ability"><kbd>Q</kbd><b>⬡</b><span>Arcane Shield</span><em id="cooldown-shield"></em></div><div class="default-ability"><span class="bolt-dot"></span><span>Charged Firebolt</span></div></div>
+      <div id="focus-help" class="hidden">Move the sigil · Click to cast · Right-click to cancel</div>
+      <button id="pause-button" aria-label="Pause game">Ⅱ</button>
+    </section>
+
+    <section id="talent-screen" class="screen panel-screen" aria-labelledby="talent-title">
+      <div class="panel">
+        <p class="eyebrow">Permanent progression</p>
+        <h2 id="talent-title">Arcane Talents</h2>
+        <p id="talent-summary">Level 1 · 0 perk points</p>
+        <h3>Passive talents</h3>
+        <div class="talent-grid">
+          <button class="talent" data-talent="power"><span>🔥</span><strong>Focused Flame</strong><small>Firebolts deal +15% damage</small><i>0 / 3</i></button>
+          <button class="talent" data-talent="mana"><span>✦</span><strong>Deep Wells</strong><small>Maximum magic +20</small><i>0 / 3</i></button>
+          <button class="talent" data-talent="vitality"><span>♥</span><strong>Iron Will</strong><small>Maximum health +20</small><i>0 / 3</i></button>
+          <button class="talent" data-talent="haste"><span>⚡</span><strong>Quickening</strong><small>Spell cooldowns recover 10% faster</small><i>0 / 3</i></button>
+        </div>
+        <h3>Equipped spell mastery</h3>
+        <p class="section-copy">Upgrades remain attached to each spell, even when you change your loadout.</p>
+        <div class="talent-grid spell-talents">
+          <button class="talent spell-talent" data-spell-talent="golem"><span>♟</span><strong>Runed Golem</strong><small>+25% golem health and duration</small><i>0 / 3</i></button>
+          <button class="talent spell-talent" data-spell-talent="vortex"><span>◉</span><strong>Hungry Vortex</strong><small>Greater pull and damage</small><i>0 / 3</i></button>
+          <button class="talent spell-talent" data-spell-talent="vines"><span>♧</span><strong>Thorned Snare</strong><small>Longer root and added damage</small><i>0 / 3</i></button>
+          <button class="talent spell-talent" data-spell-talent="teleport"><span>➜</span><strong>Rift Step</strong><small>Longer range and shorter cooldown</small><i>0 / 3</i></button>
+        </div>
+        <button id="back-button" class="primary">Return</button>
+      </div>
+    </section>
+
+    <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-card"><p class="eyebrow" id="modal-kicker">Arena report</p><h2 id="modal-title">The graveyard rests</h2><p id="modal-copy"></p><button id="modal-button" class="primary">Continue</button></div>
+    </div>
+    <div id="pause-menu" class="modal hidden" role="dialog" aria-modal="true" aria-label="Game paused">
+      <div class="modal-card pause-card"><p class="eyebrow">Arena paused</p><h2>Take a breath</h2><button id="resume-button" class="primary">Resume</button><button id="restart-button" class="secondary">Restart arena</button><button id="home-button" class="secondary">Return to Sanctum</button><p class="pause-controls">WASD move · Mouse aim · Hold click firebolt · Q shield · 1–4 spells</p></div>
+    </div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
